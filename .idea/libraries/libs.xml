@@ -1,13 +1,27 @@
 <component name="libraryTable">
   <library name="libs">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/libs" />
+      <root url="jar://$PROJECT_DIR$/libs/robocode.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/org.osgi.service.prefs-1.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/bcel-6.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/robocode.core-1.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/robocode.ui.editor-1.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/picocontainer-2.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/commons-lang3-3.14.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/robocode.sound-1.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jna-5.14.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/robocode.repository-1.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/robocode.ui-1.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/robocode.battle-1.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/annotations-13.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/kotlin-stdlib-2.0.20.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/robocode.host-1.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jna-platform-5.14.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/codesize-1.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/osgi.annotation-8.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/roborumble.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="file://$PROJECT_DIR$/libs" />
-    </SOURCES>
-    <jarDirectory url="file://$PROJECT_DIR$/libs" recursive="false" />
-    <jarDirectory url="file://$PROJECT_DIR$/libs" recursive="false" type="SOURCES" />
+    <SOURCES />
   </library>
 </component>

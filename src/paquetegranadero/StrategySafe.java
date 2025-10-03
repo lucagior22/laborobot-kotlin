@@ -2,7 +2,7 @@ package paquetegranadero;
 
 import robocode.JuniorRobot;
 
-public class StrategySafe extends RobotStrategy {
+public class StrategySafe implements RobotStrategy {
 
     @Override
     public void run(JuniorRobot robot) {
