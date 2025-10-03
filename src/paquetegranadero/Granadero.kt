@@ -2,9 +2,9 @@ package paquetegranadero
 
 import robocode.*
 
-class GranaderoK: JuniorRobot() {
+class Granadero: JuniorRobot() {
 
-    private val strategy = StrategyPredictiveCorners()
+    private val strategy = StrategySafe()
 
     override fun run(){
         strategy.run(this)
