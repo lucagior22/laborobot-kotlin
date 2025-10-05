@@ -5,11 +5,11 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-class StrategyPredictiveCorners {
+class StrategyPredictiveCorners : RobotStrategy{
     var cycles = 0
 
 
-    fun run(robot: JuniorRobot){
+    override fun run(robot: JuniorRobot){
         robot.setColors(JuniorRobot.blue, JuniorRobot.white, JuniorRobot.white, JuniorRobot.yellow, JuniorRobot.white)
     if(inCorner(robot)){
         robot.ahead(30)
@@ -60,7 +60,7 @@ class StrategyPredictiveCorners {
         return min(3.0, max(0.1, auxFirePower))
     }
 
-    fun onScannedRobot(robot: JuniorRobot){
+    override fun onScannedRobot(robot: JuniorRobot){
         if (this.cycles >= 3) {
             this.cycles = 0
             robot.turnGunTo(robot.scannedAngle)
@@ -68,7 +68,7 @@ class StrategyPredictiveCorners {
         }
     }
 
-    fun onHitByBullet(robot: JuniorRobot){
+    override fun onHitByBullet(robot: JuniorRobot){
         if (this.inCorner(robot)) {
             robot.ahead(100)
         }
@@ -77,7 +77,7 @@ class StrategyPredictiveCorners {
         }
     }
 
-    fun onHitWall(robot: JuniorRobot){
+    override fun onHitWall(robot: JuniorRobot){
         val turnToAngle: Int
 
         if (robot.hitWallBearing > 0) {
@@ -92,7 +92,7 @@ class StrategyPredictiveCorners {
         robot.ahead(100)
     }
 
-    fun onHitRobot(robot: JuniorRobot){
+    override fun onHitRobot(robot: JuniorRobot){
         robot.turnGunTo(robot.hitRobotAngle)
         robot.fire(3.0)
     }
