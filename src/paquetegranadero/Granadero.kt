@@ -1,29 +1,46 @@
 package paquetegranadero
 
-import robocode.*
+import robocode.JuniorRobot
 
-class Granadero: JuniorRobot() {
+class Granadero : JuniorRobot() {
+    private val strategist: RobotStrategist = StrategistSanMartin.getInstance()
+    private var strategy: RobotStrategy? = null
 
-    private val strategy = StrategySafe()
-
-    override fun run(){
-        strategy.run(this)
+    private fun updateStrategy() {
+        strategy = strategist.decide(this, this.strategy)
     }
 
-    override fun onHitWall() {
-        strategy.run(this)
+    override fun run() {
+        updateStrategy()
+        strategy!!.run(this)
     }
 
+    /**
+     * onScannedRobot: What to do when you see another robot
+     */
+    override fun onScannedRobot() {
+        updateStrategy()
+        strategy!!.onScannedRobot(this)
+    }
+
+    /**
+     * onHitByBullet: What to do when you're hit by a bullet
+     */
     override fun onHitByBullet() {
-        strategy.onHitByBullet(this)
+        updateStrategy()
+        strategy!!.onHitByBullet(this)
+    }
+
+    /**
+     * onHitWall: What to do when you hit a wall
+     */
+    override fun onHitWall() {
+        updateStrategy()
+        strategy!!.onHitWall(this)
     }
 
     override fun onHitRobot() {
-        strategy.onHitRobot(this)
+        updateStrategy()
+        strategy!!.onHitRobot(this)
     }
-
-    override fun onScannedRobot() {
-        strategy.onScannedRobot(this)
-    }
-
 }
