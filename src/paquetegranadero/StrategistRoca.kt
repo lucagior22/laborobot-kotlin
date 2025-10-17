@@ -1,200 +1,192 @@
 package paquetegranadero;
 
 import robocode.JuniorRobot;
+import kotlin.math.atan2
+import kotlin.math.hypot
+import kotlin.math.max
+import kotlin.math.min
 
-public class StrategistRoca implements RobotStrategist {
-    private static StrategistRoca instance = null;
+class StrategistRoca private constructor() : RobotStrategist {
+    companion object {
+        @Volatile
+        private var instance: StrategistRoca? = null;
 
-    private StrategistRoca() {}
-
-    @Override
-    public RobotStrategy decide(JuniorRobot robot, RobotStrategy currentStrategy) {
-        if (robot.others >= 3) {
-            if (currentStrategy instanceof StrategyWallHugger) {
-                return currentStrategy;
+        fun getInstance() {
+            instance ?: synchronized(this) { // Pregunta si instance es null o sino entra al lock sincrónico (orientado a concurrencia)
+                instance ?: StrategistRoca().also { instance = it} // Repregunta si instance es null o sino instancia el estratega y also (además) lo asigna a instance
             }
-            return new StrategyWallHugger();
         }
-        if (currentStrategy instanceof StrategyCentralControl) {
+    }
+    override fun decide(robot : JuniorRobot, currentStrategy : RobotStrategy) : RobotStrategy {
+        if (robot.others >= 3) {
+            if (currentStrategy is StrategyWallHugger) {
+                return currentStrategy
+            }
+            return StrategyWallHugger();
+        }
+        if (currentStrategy is StrategyCentralControl) {
             return currentStrategy;
         }
-        return new StrategyCentralControl();
+        return StrategyCentralControl();
     }
 
-    public static StrategistRoca getInstance() {
-        if (instance == null) {
-            instance = new StrategistRoca();
-        }
-        return instance;
-    }
+    private class StrategyWallHugger : RobotStrategy {
+        private var clockwise = true
 
-    private class StrategyWallHugger implements RobotStrategy {
-        private boolean clockwise = true;
+        override fun run(robot: JuniorRobot?) {
+            robot?.setColors(JuniorRobot.red, JuniorRobot.black, JuniorRobot.black, JuniorRobot.orange, JuniorRobot.black)
 
-        @Override
-        public void run(JuniorRobot robot) {
-            robot.setColors(JuniorRobot.red, JuniorRobot.black, JuniorRobot.black, JuniorRobot.orange, JuniorRobot.black);
-
-            // Moverse siguiendo las paredes del campo
             if (nearWall(robot)) {
                 if (clockwise) {
-                    robot.turnRight(90);
+                    robot?.turnRight(90)
                 } else {
-                    robot.turnLeft(90);
+                    robot?.turnLeft(90)
                 }
             }
-            robot.ahead(40);
 
-            robot.turnGunRight(10);
+            robot?.ahead(40)
+
+            robot?.turnGunRight(10)
         }
 
-        @Override
-        public void onScannedRobot(JuniorRobot robot) {
-            double firepower = calculateWallHuggerFirePower(robot);
+        override fun onScannedRobot(robot: JuniorRobot?) {
+            val firepower = calculateWallHuggerFirePower(robot!!)
 
-            robot.turnGunTo(robot.scannedAngle);
-            robot.fire(firepower);
+            robot.turnGunTo(robot.scannedAngle)
+            robot.fire(firepower)
 
             if (robot.scannedDistance < 80) {
-                clockwise = !clockwise;
+                clockwise = !clockwise
             }
         }
 
-        @Override
-        public void onHitWall(JuniorRobot robot) {
+        override fun onHitWall(robot: JuniorRobot?) {
             if (clockwise) {
-                robot.turnRight(90);
+                robot?.turnRight(90)
             } else {
-                robot.turnLeft(90);
+                robot?.turnLeft(90)
             }
-            robot.ahead(30);
+            robot?.ahead(30)
         }
 
-        @Override
-        public void onHitByBullet(JuniorRobot robot) {
-            clockwise = !clockwise;
-            robot.turnGunTo(robot.hitByBulletAngle);
-            robot.fire(2);
+        override fun onHitByBullet(robot: JuniorRobot?) {
+            clockwise = !clockwise
+            robot?.turnGunTo(robot.hitByBulletAngle)
+            robot?.fire(2.0)
         }
 
-        @Override
-        public void onHitRobot(JuniorRobot robot) {
-            robot.turnGunTo(robot.hitRobotAngle);
-            robot.fire(3);
-            robot.back(20);
+        override fun onHitRobot(robot: JuniorRobot?) {
+            robot?.turnGunTo(robot.hitRobotAngle)
+            robot?.fire(3.0)
+            robot?.back(20)
         }
 
-        private boolean nearWall(JuniorRobot robot) {
-            double margin = 80;
-            return robot.robotX < margin || robot.robotY < margin ||
-                    robot.robotX > robot.fieldWidth - margin ||
-                    robot.robotY > robot.fieldHeight - margin;
+        private fun nearWall(robot : JuniorRobot?) : Boolean {
+            val margin = 80
+            return robot!!.robotX < margin || robot.robotY < margin || robot.robotX > robot.fieldWidth - margin || robot.robotY > robot.fieldHeight - margin
         }
 
-        private double calculateWallHuggerFirePower(JuniorRobot robot) {
-            double firepower = 1.5;
+        private fun calculateWallHuggerFirePower(robot : JuniorRobot) : Double {
+            var firepower = 1.5
 
-            if (robot.scannedDistance < 100) firepower += 1.0;
+            if (robot.scannedDistance < 100) firepower += 1.0
 
-            if (robot.scannedVelocity > 4) firepower -= 0.5;
+            if (robot.scannedVelocity > 4) firepower -= 0.5
 
-            if (robot.energy > 60) firepower += 0.5;
+            if (robot.energy > 60) firepower += 0.5
 
-            return Math.min(3, Math.max(0.1, firepower));
+            return 3.0.coerceAtMost(0.1.coerceAtLeast(firepower)) // Es equivalente a la solución en Java, el IDEA me sugería el cambio
         }
     }
 
-    private class StrategyCentralControl implements RobotStrategy {
-        private int scanDirection = 1;
-        private boolean inCenter = false;
+    private class StrategyCentralControl : RobotStrategy {
+        private var scanDirection = 1
+        private var inCenter = false
 
-        @Override
-        public void run(JuniorRobot robot) {
-            robot.setColors(JuniorRobot.green, JuniorRobot.white, JuniorRobot.white, JuniorRobot.red, JuniorRobot.white);
+        override fun run(robot: JuniorRobot?) {
+            robot?.setColors(JuniorRobot.green, JuniorRobot.white, JuniorRobot.white, JuniorRobot.red, JuniorRobot.white)
 
             if (!inCenter) {
-                double centerX = robot.fieldWidth / 2;
-                double centerY = robot.fieldHeight / 2;
+                val centerX = (robot!!.fieldWidth / 2).toDouble()
+                val centerY = (robot.fieldHeight / 2).toDouble()
 
-                double angleToCenter = Math.toDegrees(Math.atan2(
+                val angleToCenter = Math.toDegrees(
+                    atan2(
                         centerX - robot.robotX,
                         centerY - robot.robotY
-                ));
+                    )
+                )
 
-                robot.turnTo((int)angleToCenter);
+                robot.turnTo(angleToCenter.toInt())
 
-                double distanceToCenter = Math.hypot(
-                        centerX - robot.robotX,
-                        centerY - robot.robotY
-                );
+                val distanceToCenter = hypot(
+                    centerX - robot.robotX,
+                    centerY - robot.robotY
+                )
 
                 if (distanceToCenter > 50) {
-                    robot.ahead(30);
+                    robot.ahead(30)
                 } else {
-                    inCenter = true;
+                    inCenter = true
                 }
             } else {
-                robot.turnRight(45);
-                robot.ahead(20);
+                robot?.turnRight(45)
+                robot?.ahead(20)
             }
 
-            robot.turnGunRight(30 * scanDirection);
+            robot?.turnGunRight(30 * scanDirection)
         }
 
-        @Override
-        public void onScannedRobot(JuniorRobot robot) {
-            double firepower = calculateCentralFirePower(robot);
+        override fun onScannedRobot(robot: JuniorRobot?) {
+            val firepower = calculateCentralFirePower(robot!!)
 
-            robot.turnGunTo(robot.scannedAngle);
-            robot.fire(firepower);
+            robot.turnGunTo(robot.scannedAngle)
+            robot.fire(firepower)
 
             if (Math.random() < 0.3) {
-                scanDirection *= -1;
+                scanDirection *= -1
             }
         }
 
-        @Override
-        public void onHitByBullet(JuniorRobot robot) {
+        override fun onHitByBullet(robot: JuniorRobot?) {
             // Moverse un poco cuando nos golpeen
-            robot.turnRight(90);
-            robot.ahead(30);
+            robot?.turnRight(90)
+            robot?.ahead(30)
 
             // Disparar de vuelta
-            robot.turnGunTo(robot.hitByBulletAngle);
-            robot.fire(2);
+            robot?.turnGunTo(robot.hitByBulletAngle)
+            robot?.fire(2.0)
         }
 
-        @Override
-        public void onHitWall(JuniorRobot robot) {
+        override fun onHitWall(robot: JuniorRobot?) {
             // Esto no debería pasar mucho si estamos en el centro
-            inCenter = false;
-            robot.turnRight(180);
-            robot.ahead(50);
+            inCenter = false
+            robot?.turnRight(180)
+            robot?.ahead(50)
         }
 
-        @Override
-        public void onHitRobot(JuniorRobot robot) {
-            robot.turnGunTo(robot.hitRobotAngle);
-            robot.fire(3);
-            robot.back(30);
+        override fun onHitRobot(robot: JuniorRobot?) {
+            robot?.turnGunTo(robot.hitRobotAngle)
+            robot?.fire(3.0)
+            robot?.back(30)
         }
 
-        private double calculateCentralFirePower(JuniorRobot robot) {
-            double firepower = 2.0; // Base más alta desde posición central
+        private fun calculateCentralFirePower(robot: JuniorRobot): Double {
+            var firepower = 2.0 // Base más alta desde posición central
 
             // Ajustar por distancia (más potencia a distancia media)
             if (robot.scannedDistance > 200 && robot.scannedDistance < 400) {
-                firepower += 0.5;
+                firepower += 0.5
             }
 
             // Menos potencia si el enemigo se mueve rápido
-            if (robot.scannedVelocity > 5) firepower -= 1.0;
-            else if (robot.scannedVelocity == 0) firepower += 0.5;
+            if (robot.scannedVelocity > 5) firepower -= 1.0
+            else if (robot.scannedVelocity == 0) firepower += 0.5
 
             // Ajustar por energía propia
-            if (robot.energy < 30) firepower -= 0.5;
+            if (robot.energy < 30) firepower -= 0.5
 
-            return Math.min(3, Math.max(0.1, firepower));
+            return min(3.0, max(0.1, firepower))
         }
     }
 }
