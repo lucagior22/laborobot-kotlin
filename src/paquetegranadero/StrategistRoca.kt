@@ -11,13 +11,13 @@ class StrategistRoca private constructor() : RobotStrategist {
         @Volatile
         private var instance: StrategistRoca? = null;
 
-        fun getInstance() {
-            instance ?: synchronized(this) { // Pregunta si instance es null o sino entra al lock sincrónico (orientado a concurrencia)
+        fun getInstance(): StrategistRoca {
+            return instance ?: synchronized(this) { // Pregunta si instance es null o sino entra al lock sincrónico (orientado a concurrencia)
                 instance ?: StrategistRoca().also { instance = it} // Repregunta si instance es null o sino instancia el estratega y also (además) lo asigna a instance
             }
         }
     }
-    override fun decide(robot : JuniorRobot, currentStrategy : RobotStrategy) : RobotStrategy {
+    override fun decide(robot: JuniorRobot, currentStrategy: RobotStrategy?) : RobotStrategy {
         if (robot.others >= 3) {
             if (currentStrategy is StrategyWallHugger) {
                 return currentStrategy

@@ -5,11 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1d00ee6-d2fe-4f18-9e3d-2cff6ddece22" name="Changes" comment="Granadero hecho">
-      <change afterPath="$PROJECT_DIR$/src/paquetegranadero/RobotStrategist.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/paquetegranadero/StrategistRoca.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/paquetegranadero/RobotStrategy.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/paquetegranadero/RobotStrategy.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/paquetegranadero/StrategistRoca.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/robocode.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config/robocode.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/window.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config/window.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/paquetegranadero/Granadero.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/paquetegranadero/Granadero.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/paquetegranadero/RobotStrategist.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/paquetegranadero/RobotStrategist.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/paquetegranadero/StrategistRoca.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/paquetegranadero/StrategistRoca.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/paquetegranadero/StrategistSanMartin.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
