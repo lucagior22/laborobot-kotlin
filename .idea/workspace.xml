@@ -8,10 +8,11 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/robocode.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config/robocode.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/window.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config/window.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robots/robot.database" beforeDir="false" afterPath="$PROJECT_DIR$/robots/robot.database" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robots/sample/SittingDuck.data/count.dat" beforeDir="false" afterPath="$PROJECT_DIR$/robots/sample/SittingDuck.data/count.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/paquetegranadero/Granadero.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/paquetegranadero/Granadero.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/paquetegranadero/RobotStrategist.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/paquetegranadero/RobotStrategist.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/paquetegranadero/StrategistRoca.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/paquetegranadero/StrategistRoca.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/paquetegranadero/StrategistSanMartin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/paquetegranadero/StrategistSanMartin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/paquetegranadero/StrategistSanMartin.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

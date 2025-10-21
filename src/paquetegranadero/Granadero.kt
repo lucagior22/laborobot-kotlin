@@ -8,6 +8,7 @@ class Granadero : JuniorRobot() {
 
     private fun updateStrategy() {
         strategy = strategist.decide(this, this.strategy)
+        println(strategy)
     }
 
     override fun run() {

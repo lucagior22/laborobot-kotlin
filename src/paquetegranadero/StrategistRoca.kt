@@ -1,6 +1,6 @@
-package paquetegranadero;
+package paquetegranadero
 
-import robocode.JuniorRobot;
+import robocode.JuniorRobot
 import kotlin.math.atan2
 import kotlin.math.hypot
 import kotlin.math.max
@@ -8,13 +8,10 @@ import kotlin.math.min
 
 class StrategistRoca private constructor() : RobotStrategist {
     companion object {
-        @Volatile
-        private var instance: StrategistRoca? = null;
+        private var instance: StrategistRoca? = null
 
         fun getInstance(): StrategistRoca {
-            return instance ?: synchronized(this) { // Pregunta si instance es null o sino entra al lock sincrónico (orientado a concurrencia)
-                instance ?: StrategistRoca().also { instance = it} // Repregunta si instance es null o sino instancia el estratega y also (además) lo asigna a instance
-            }
+            return instance ?: StrategistRoca().also { instance = it} // Aprovechamos el operador Elvis de Kotlin
         }
     }
     override fun decide(robot: JuniorRobot, currentStrategy: RobotStrategy?) : RobotStrategy {
@@ -22,15 +19,15 @@ class StrategistRoca private constructor() : RobotStrategist {
             if (currentStrategy is StrategyWallHugger) {
                 return currentStrategy
             }
-            return StrategyWallHugger();
+            return StrategyWallHugger()
         }
         if (currentStrategy is StrategyCentralControl) {
-            return currentStrategy;
+            return currentStrategy
         }
-        return StrategyCentralControl();
+        return StrategyCentralControl()
     }
 
-    private class StrategyWallHugger : RobotStrategy {
+    private inner class StrategyWallHugger : RobotStrategy {
         private var clockwise = true
 
         override fun run(robot: JuniorRobot?) {
@@ -99,7 +96,7 @@ class StrategistRoca private constructor() : RobotStrategist {
         }
     }
 
-    private class StrategyCentralControl : RobotStrategy {
+    private inner class StrategyCentralControl : RobotStrategy {
         private var scanDirection = 1
         private var inCenter = false
 
@@ -175,7 +172,7 @@ class StrategistRoca private constructor() : RobotStrategist {
             var firepower = 2.0 // Base más alta desde posición central
 
             // Ajustar por distancia (más potencia a distancia media)
-            if (robot.scannedDistance > 200 && robot.scannedDistance < 400) {
+            if (robot.scannedDistance in 201..<400) {
                 firepower += 0.5
             }
 

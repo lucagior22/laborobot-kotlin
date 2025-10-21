@@ -6,13 +6,10 @@ import kotlin.math.*
 class StrategistSanMartin private constructor() : RobotStrategist {
 
     companion object {
-        @Volatile
         private var instance: StrategistSanMartin? = null
 
         fun getInstance(): StrategistSanMartin {
-            return instance ?: synchronized(this) {
-                instance ?: StrategistSanMartin().also { instance = it }
-            }
+            return instance ?: StrategistSanMartin().also { instance = it } // Aprovechamos el operador Elvis de Kotlin
         }
     }
 
@@ -172,7 +169,7 @@ class StrategistSanMartin private constructor() : RobotStrategist {
     }
 
 
-    private class StrategyPredictiveCorners : RobotStrategy {
+    private inner class StrategyPredictiveCorners : RobotStrategy {
         private var cycles = 0
 
         override fun run(robot: JuniorRobot?) {
@@ -309,12 +306,11 @@ class StrategistSanMartin private constructor() : RobotStrategist {
         }
 
         override fun onHitWall(robot: JuniorRobot?) {
-            val turnToAngle: Int
 
-            if (robot!!.hitWallBearing > 0) {
-                turnToAngle = (robot.hitWallAngle + 90) % 360
+            val turnToAngle = if (robot!!.hitWallBearing > 0) {
+                (robot.hitWallAngle + 90) % 360
             } else {
-                turnToAngle = (robot.hitWallAngle - 90) % 360
+                (robot.hitWallAngle - 90) % 360
             }
 
             robot.turnTo(turnToAngle)
